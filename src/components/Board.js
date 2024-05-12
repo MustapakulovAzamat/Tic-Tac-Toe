@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Square } from './Square';
 
 export const Board = () => {
@@ -7,6 +7,8 @@ export const Board = () => {
     const [isNextX, setIsNextX] = useState(true);
 
     const [winners, setWinners] = useState({ x: 0, o: 0 });
+
+    const winnersRef = useRef(winners)
 
     let info = `Next - ${(isNextX) ? 'x' : 'o'}`;
     let winnerInfo = null;
@@ -40,17 +42,26 @@ export const Board = () => {
         return null;
     }, [squares])
 
-
+    useEffect(() => {
+        const data = localStorage.getItem('winner')
+        if(data) {
+            setWinners(JSON.parse(data))
+            winnersRef.current = JSON.parse(data)
+        }
+    }, [])
 
     useEffect(() => {
         const winner = winnerFunc();
         if (winner) {
             setWinners(prevWinners => {
-                return {
+                const updateWinners = {
                     ...prevWinners,
                     [winner]: prevWinners[winner] + 1
-                };
+                }
+                winnersRef.current = updateWinners
+                return updateWinners
             });
+            localStorage.setItem('winner', JSON.stringify(winnersRef.current))
         }
     }, [squares, winnerFunc]);
 
@@ -60,6 +71,7 @@ export const Board = () => {
     // следующий ход
     const setSquaresValue = (index) => {
         if (winnerInfo) {
+            localStorage.setItem('winner', JSON.stringify(winnersRef.current))
             window.location.reload()
             return
         } 

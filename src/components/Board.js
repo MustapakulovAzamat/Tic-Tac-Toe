@@ -4,11 +4,10 @@ import { Square } from './Square';
 export const Board = () => {
     const [squares, setSquares] = useState(Array(9).fill(null));
 
-    const [isNextX, setIsNextX] = useState(true);
-
-    const [winners, setWinners] = useState({ x: 0, o: 0 });
-
+    const [winners, setWinners] = useState({ x: 0, o: 0 })
     const winnersRef = useRef(winners)
+
+    const [isNextX, setIsNextX] = useState(true);
 
     let info = `Next - ${(isNextX) ? 'x' : 'o'}`;
     let winnerInfo = null;

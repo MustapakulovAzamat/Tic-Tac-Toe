@@ -89,14 +89,16 @@ export const Board = () => {
                 <h2>X win - {winners.x}</h2>
                 <h2>O win - {winners.o}</h2>
             </div>
-            {squares.map((square, index) => {
-                return (
-                    <span key={index} className='span'>
-                        <Square value={square} setSquaresValue={() => { setSquaresValue(index) }} />
-                        {(index === 2 || index === 5) && <br />}
-                    </span>
-                );
-            })}
+            <div className='board'>
+                {squares.map((square, index) => {
+                    return (
+                        <span key={index} className='span'>
+                            <Square value={square} setSquaresValue={() => { setSquaresValue(index) }} />
+                            {(index === 2 || index === 5) && <br />}
+                        </span>
+                    );
+                })}
+            </div>
         </div>
     );
 };
